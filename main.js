@@ -1,12 +1,19 @@
 const fs = require("fs");
 const path = require("path");
 const iconv = require("iconv-lite");
-const pinyinUtil = require("ipinyinjs");
-
-console.log(pinyinUtil)
+var pinyinlite = require('pinyinlite');
 
 const INPUT = "./input";
 const OUTPUT = "./output";
+
+const checkPinyin = (arr, pinyin) => {
+  for (let i = 0; i < arr.length; i++) {
+    if(arr[i] == pinyin) {
+      return true;
+    }
+  }
+  return false;
+}
 
 const exportFile = (dir, filename) => {
   const newname = filename.replace("_再痕中文", '');
@@ -17,10 +24,25 @@ const exportFile = (dir, filename) => {
   // console.log("##", str);
   strs = str.split("\n"); //字符分割
 
+  var lines = [];
   for (i = 0; i < strs.length; i++) {
-    let s = strs[i];
-    console.log("##", pinyinUtil.getPinyin(s[0]), pinyinUtil.getPinyin(s[1]), s);
+    let line = strs[i];
+    let s = line.substr(0, 2);
+    let arr = pinyinlite(s);
+    let match = false;
+    if (arr.length >= 2) {
+      if(checkPinyin(arr[0], "zai") && checkPinyin(arr[1], "hen")) {
+        match = true;
+      }
+    }
+    if(match) {
+      console.log("##", line);
+    } else {
+      lines.push(line);
+    }
   }
+
+  fs.writeFileSync(path.join(OUTPUT, dir, newname), lines.join("\n"));
 }
 
 const exportDir = (dir) => {

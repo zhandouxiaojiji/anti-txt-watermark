@@ -5,6 +5,7 @@
     "start": "node main.js"
   },
   "dependencies": {
-    "iconv-lite": "^0.5.1"
+    "iconv-lite": "^0.5.1",
+    "pinyinlite": "^1.2.1"
   }
 }
