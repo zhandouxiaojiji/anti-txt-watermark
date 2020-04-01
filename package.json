@@ -1,0 +1,10 @@
+{
+  "name": "anti-txt-watermark",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "dependencies": {
+    "iconv-lite": "^0.5.1"
+  }
+}
