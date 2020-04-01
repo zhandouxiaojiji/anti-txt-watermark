@@ -8,7 +8,7 @@ const OUTPUT = "./output";
 
 const checkPinyin = (arr, pinyin) => {
   for (let i = 0; i < arr.length; i++) {
-    if(arr[i] == pinyin) {
+    if (arr[i] == pinyin) {
       return true;
     }
   }
@@ -27,15 +27,15 @@ const exportFile = (dir, filename) => {
   var lines = [];
   for (i = 0; i < strs.length; i++) {
     let line = strs[i];
-    let s = line.substr(0, 2);
+    let s = line.substr(1, 3);
     let arr = pinyinlite(s);
     let match = false;
     if (arr.length >= 2) {
-      if(checkPinyin(arr[0], "zai") && checkPinyin(arr[1], "hen")) {
+      if (checkPinyin(arr[0], "hen") && checkPinyin(arr[1], "zhong")) {
         match = true;
       }
     }
-    if(match) {
+    if (match || i > strs.length - 8) {
       console.log("##", line);
     } else {
       lines.push(line);
@@ -51,6 +51,7 @@ const exportDir = (dir) => {
   filenames.forEach((filename) => {
     const stat = fs.statSync(path.join(INPUT, dir, filename))
     if (stat.isDirectory()) {
+      fs.mkdirSync(path.join(OUTPUT, dir, filename));
       exportDir(filename);
     } else {
       exportFile(dir, filename);
